@@ -17,7 +17,6 @@ class InventoryManager:
             try:
                 with open(self.inventory_file, "r", encoding="utf-8") as file:
                     data = json.load(file)
-                    # Переконуємося, що всі необхідні ключі присутні
                     if "products" not in data:
                         data["products"] = {}
                     if "transactions" not in data:
@@ -25,12 +24,10 @@ class InventoryManager:
                     if "history" not in data:
                         data["history"] = {}
 
-                    # Нормалізація транзакцій: додаємо ключ 'user', якщо його немає
                     for transaction in data["transactions"]:
                         if "user" not in transaction:
                             transaction["user"] = "unknown"
 
-                    # Додаємо low_stock_alert для всіх товарів, якщо відсутній
                     for product in data["products"].values():
                         if "low_stock_alert" not in product:
                             product["low_stock_alert"] = product.get("quantity", 0) < 5
